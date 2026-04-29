@@ -123,11 +123,11 @@
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for category in [
-                {"title": "Machine Learning & AI", "skills": ["Python", "Scikit-learn", "XGBoost", "TensorFlow", "PyTorch", "Keras", "Feature Engineering"]},
+                {"title": "Artificial Intelligence & Machine Learning  ", "skills": ["Agentic AI","RAG", "MLFlow", "Scikit-learn", "XGBoost", "TensorFlow", "PyTorch", "Keras", "Feature Engineering"]},
                 {"title": "Natural Language Processing", "skills": ["NLP", "Hugging Face", "SpaCy", "NLTK", "Text Classification", "NER", "Transformers"]},
                 {"title": "Big Data & Cloud", "skills": ["Apache Spark", "AWS", "Azure", "Docker", "Kubernetes", "Snowflake", "MLOps"]},
                 {"title": "Data Engineering", "skills": ["SQL", "PySpark", "Pandas", "NumPy", "ETL Pipelines", "Real-Time Processing"]},
-                {"title": "Visualization", "skills": ["Tableau", "Power BI", "Matplotlib", "Data Storytelling"]},
+                {"title": "Visualization", "skills": ["Tableau", "Power BI", "Matplotlib","LookerStudio/DataStudio", "Data Storytelling"]},
                 {"title": "Domain Expertise", "skills": ["Healthcare Analytics", "EHR/EMR Data", "HIPAA Compliance", "Clinical Analytics"]}
             ] %}
             <div class="bg-dark-700 p-6 rounded-xl border border-dark-600 hover:border-primary hover:-translate-y-2 transition-all duration-300">
@@ -186,6 +186,13 @@
                             <div class="flip-card-back w-full h-full bg-dark-700 rounded-xl border border-dark-600 p-6 flex flex-col justify-between overflow-y-auto">
                                 <div class="space-y-4">
                                     <h3 class="text-xl font-bold text-primary">{{ project.title }}</h3>
+
+                                    {% if project.long_description %}
+                                    <div>
+                                        <h4 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Detailed Overview</h4>
+                                        <p class="text-sm text-gray-400 leading-relaxed">{{ project.long_description }}</p>
+                                    </div>
+                                    {% endif %}
 
                                     <div>
                                         <h4 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Tech Stack</h4>
@@ -322,7 +329,7 @@
             <div>
                 <h3 class="text-xl font-bold text-gradient mb-4">Mahesh Rajendra</h3>
                 <p class="text-gray-400 text-sm">
-                    AI/ML Engineer building intelligent systems that transform healthcare through data-driven insights.
+                    AI/ML Engineer focused on deploying intelligent, data-driven systems using NLP, cloud platforms, and advanced ML techniques.
                 </p>
             </div>
             
@@ -342,7 +349,7 @@
                     <a href="https://github.com/Rajendramahesh" target="_blank" class="w-10 h-10 bg-dark-700 border border-dark-600 rounded-full flex items-center justify-center hover:border-primary hover:bg-primary/10 transition">
                         <span class="text-xs">GH</span>
                     </a>
-                    <a href="https://linkedin.com/in/suraj509" target="_blank" class="w-10 h-10 bg-dark-700 border border-dark-600 rounded-full flex items-center justify-center hover:border-primary hover:bg-primary/10 transition">
+                    <a href="https://www.linkedin.com/in/rajendra-mahesh/" target="_blank" class="w-10 h-10 bg-dark-700 border border-dark-600 rounded-full flex items-center justify-center hover:border-primary hover:bg-primary/10 transition">
                         <span class="text-xs">LI</span>
                     </a>
                     <a href="mailto:maheshr@myworkmails.com" class="w-10 h-10 bg-dark-700 border border-dark-600 rounded-full flex items-center justify-center hover:border-primary hover:bg-primary/10 transition">
