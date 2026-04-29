@@ -3,11 +3,15 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, EmailStr
-from typing import List
+from typing import List, Optional
 import json
 from pathlib import Path
 from datetime import datetime
 import os
+
+from app.src.config import Config
+from app.src.embedding import EmbeddingManager
+from app.src.chat import ChatManager
 
 app = FastAPI(title="Mahesh Rajendra Portfolio")
 
@@ -22,10 +26,34 @@ DATA_DIR = Path("data")
 PROJECTS_FILE = DATA_DIR / "projects.json"
 MESSAGES_FILE = DATA_DIR / "messages.json"
 
+# Chatbot components
+embedding_manager = None
+chat_manager = None
+
+
+@app.on_event("startup")
+async def startup_event():
+    global embedding_manager, chat_manager
+    if Config.is_valid():
+        try:
+            embedding_manager = EmbeddingManager()
+            chat_manager = ChatManager(Config.GOOGLE_API_KEY)
+            print("Chatbot initialized successfully")
+        except Exception as e:
+            print(f"Chatbot init failed (will work without it): {e}")
+    else:
+        print("GEMINI_API_KEY not set, chatbot disabled")
+
+
 class ContactMessage(BaseModel):
     name: str
     email: EmailStr
     message: str
+
+
+class ChatRequest(BaseModel):
+    message: str
+    history: Optional[List[dict]] = []
 
 def load_projects():
     """Load projects from JSON file"""
@@ -98,9 +126,30 @@ async def get_projects():
     """API endpoint for projects"""
     return load_projects()
 
+@app.post("/api/chat")
+def chat(request: ChatRequest):
+    if not embedding_manager or not chat_manager:
+        return JSONResponse(
+            {"answer": "Chat is currently unavailable."},
+            status_code=503
+        )
+
+    try:
+        relevant_docs = embedding_manager.search(request.message)
+        response = chat_manager.generate_response(
+            request.message, relevant_docs, request.history
+        )
+        return JSONResponse(response)
+    except Exception as e:
+        return JSONResponse(
+            {"answer": "Something went wrong. Please try again."},
+            status_code=500
+        )
+
+
 @app.get("/health")
 async def health():
-    return {"status": "healthy"}
+    return {"status": "healthy", "chatbot": bool(chat_manager)}
 
 if __name__ == "__main__":
     import uvicorn

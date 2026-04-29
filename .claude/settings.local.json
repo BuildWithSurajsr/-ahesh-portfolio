@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"C:/Users/suraj/OneDrive/Desktop/mahesh/python-portfolio-complete/python-portfolio/app/src\")",
+      "Bash(mkdir -p \"C:/Users/suraj/OneDrive/Desktop/mahesh/python-portfolio-complete/python-portfolio/scripts\")",
+      "Bash(venv/Scripts/pip install *)",
+      "Bash(venv/Scripts/python scripts/embed.py \"C:/Users/suraj/OneDrive/Desktop/mahesh/python-portfolio-complete/mahesh_resume.pdf\")",
+      "Bash(venv/Scripts/python -c ' *)",
+      "Bash(venv/Scripts/python -m app.main)",
+      "Bash(curl *)"
+    ]
+  }
+}
