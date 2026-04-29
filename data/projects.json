@@ -3,13 +3,14 @@
     "id": 1,
     "title": "DFD Generator",
     "description": "Intelligent system that automatically generates Data Flow Diagrams from textual requirements using NLP and graph-based algorithms.",
-    "long_description": "An intelligent system that automatically generates Data Flow Diagrams (DFDs) from textual requirements using NLP and graph-based algorithms. Helps software engineers and business analysts quickly visualize system architectures and data flows.",
+    "long_description": "This project showcases an Agentic AI-powered system that autonomously generates Data Flow Diagrams (DFDs) and performs STRIDE-based threat analysis. Leveraging GPT-4o-mini with tool-calling, it analyzes codebases, infers architectures, identifies security risks, and produces Mermaid diagrams,enabling intelligent, end-to-end cybersecurity modeling with minimal human intervention.",
     "technologies": [
-      "Python",
-      "NLP",
-      "NetworkX",
-      "GraphViz",
-      "Flask"
+      "Agentic AI",
+      "OpenAI API",
+      "STRIDE Threat Modeling",
+      "Large Language Models (LLMs)",
+      "Cybersecurity Analysis",
+      "FastAPI"
     ],
     "category": "AI/ML",
     "github": "https://github.com/Rajendramahesh/DFD-gen",
@@ -29,13 +30,13 @@
     "technologies": [
       "Python",
       "LangChain",
-      "OpenAI API",
+      "Gemini API",
       "Vector DB",
       "FastAPI",
       "Streamlit"
     ],
     "category": "AI/ML",
-    "github": "#",
+    "github": "https://github.com/Rajendramahesh/rag-chatbot",
     "demo": "#",
     "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
     "highlights": [
@@ -47,16 +48,17 @@
   },
   {
     "id": 3,
-    "title": "Recommendation System",
+    "title": "Sponsor Recommendation System",
     "description": "Advanced recommendation engine using collaborative filtering and content-based algorithms.",
-    "long_description": "Advanced recommendation engine leveraging collaborative filtering and content-based algorithms to provide personalized suggestions. Scalable architecture designed for handling large-scale user-item interactions.",
+    "long_description": "SponsorMatch is a smart matching tool that helps event organizers quickly find suitable sponsors. It ranks sponsors based on event vision, target industry, audience size, and frequency, combining text insights with data features. The system delivers top matches with clear explanations and downloadable results, making sponsor selection faster, more accurate, and scalable.",
     "technologies": [
       "Python",
       "Scikit-learn",
       "Pandas",
-      "NumPy",
-      "Surprise",
-      "Flask"
+      "Sentence Transformers(SBERT)",
+      "Vector Similarity Search",
+      "FastAPI"
+
     ],
     "category": "Machine Learning",
     "github": "#",
