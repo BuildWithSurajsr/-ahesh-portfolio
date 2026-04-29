@@ -117,6 +117,29 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #00ff88;
         }
+
+        /* Flip card */
+        .flip-card {
+            perspective: 1200px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front,
+        .flip-card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+            position: absolute;
+            inset: 0;
+        }
     </style>
     
     {% block extra_head %}{% endblock %}

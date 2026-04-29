@@ -155,37 +155,99 @@
             </h2>
         </div>
         
-        <div class="grid md:grid-cols-2 gap-8">
-            {% for project in projects %}
-            <div class="bg-dark-700 rounded-xl border border-dark-600 overflow-hidden hover:border-primary hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 group">
-                <div class="relative overflow-hidden h-48">
-                    <img src="{{ project.image }}" alt="{{ project.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute top-4 left-4 px-3 py-1 bg-dark-900/80 backdrop-blur-sm rounded-full text-primary text-xs uppercase">
-                        {{ project.category }}
+        <div x-data="projectSlider({{ projects|length }})" class="relative">
+            <!-- Cards track -->
+            <div class="flex items-center justify-center gap-6 py-4" style="min-height: 440px;">
+                {% for project in projects %}
+                <div @click="current !== {{ loop.index0 }} && goTo({{ loop.index0 }})"
+                     class="absolute transition-all duration-700 ease-in-out w-full max-w-xl"
+                     :class="{{ loop.index0 }} === current ? 'cursor-default' : 'cursor-pointer'"
+                     :style="getCardStyle({{ loop.index0 }})">
+                    <div class="flip-card h-[420px]" :class="{{ loop.index0 }} !== current && 'pointer-events-none'">
+                        <div class="flip-card-inner w-full h-full">
+                            <!-- Front -->
+                            <div class="flip-card-front w-full h-full bg-dark-700 rounded-xl border border-dark-600 overflow-hidden flex flex-col">
+                                <div class="relative overflow-hidden h-48 shrink-0">
+                                    <img src="{{ project.image }}" alt="{{ project.title }}" class="w-full h-full object-cover">
+                                    <div class="absolute top-4 left-4 px-3 py-1 bg-dark-900/80 backdrop-blur-sm rounded-full text-primary text-xs uppercase">
+                                        {{ project.category }}
+                                    </div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-1 justify-between">
+                                    <div>
+                                        <h3 class="text-2xl font-bold mb-2">{{ project.title }}</h3>
+                                        <p class="text-gray-400 text-sm">{{ project.description }}</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-3 italic">Hover to see details</p>
+                                </div>
+                            </div>
+
+                            <!-- Back -->
+                            <div class="flip-card-back w-full h-full bg-dark-700 rounded-xl border border-dark-600 p-6 flex flex-col justify-between overflow-y-auto">
+                                <div class="space-y-4">
+                                    <h3 class="text-xl font-bold text-primary">{{ project.title }}</h3>
+
+                                    <div>
+                                        <h4 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Tech Stack</h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            {% for tech in project.technologies %}
+                                            <span class="px-2 py-1 bg-dark-800 border border-dark-600 rounded text-xs text-gray-400">
+                                                {{ tech }}
+                                            </span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    {% if project.highlights %}
+                                    <div>
+                                        <h4 class="text-xs uppercase tracking-wider text-gray-500 mb-2">Key Highlights</h4>
+                                        <ul class="space-y-1">
+                                            {% for item in project.highlights %}
+                                            <li class="text-sm text-gray-400 flex items-start gap-2">
+                                                <span class="text-primary mt-0.5">&#9654;</span>
+                                                <span>{{ item }}</span>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="pt-4 border-t border-dark-600 mt-4">
+                                    <a href="{{ project.github }}" target="_blank" class="text-primary hover:text-secondary transition flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                        GitHub
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="p-6 space-y-4">
-                    <h3 class="text-2xl font-bold">{{ project.title }}</h3>
-                    <p class="text-gray-400">{{ project.description }}</p>
-                    <div class="flex flex-wrap gap-2">
-                        {% for tech in project.technologies[:4] %}
-                        <span class="px-2 py-1 bg-dark-800 border border-dark-600 rounded text-xs text-gray-500">
-                            {{ tech }}
-                        </span>
-                        {% endfor %}
-                    </div>
-                    <div class="flex gap-4 pt-2">
-                        <a href="{{ project.github }}" target="_blank" class="text-primary hover:text-secondary transition flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            GitHub
-                        </a>
-                        <a href="/project/{{ project.id }}" class="text-primary hover:text-secondary transition">
-                            View Details →
-                        </a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
+            <!-- Sleek navigation -->
+            <div class="flex items-center justify-center gap-6 mt-6">
+                <button @click="prev()"
+                        class="group flex items-center gap-2 px-4 py-2 rounded-full bg-dark-700/60 border border-dark-600 hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                    <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    <span class="text-xs text-gray-400 group-hover:text-primary transition-colors hidden sm:inline">Prev</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    {% for project in projects %}
+                    <button @click="goTo({{ loop.index0 }})"
+                            :class="{{ loop.index0 }} === current ? 'bg-primary w-8 shadow-lg shadow-primary/40' : 'bg-dark-600 w-2.5 hover:bg-gray-500'"
+                            class="h-2.5 rounded-full transition-all duration-500"></button>
+                    {% endfor %}
+                </div>
+
+                <button @click="next()"
+                        class="group flex items-center gap-2 px-4 py-2 rounded-full bg-dark-700/60 border border-dark-600 hover:border-primary hover:bg-primary/10 transition-all duration-300">
+                    <span class="text-xs text-gray-400 group-hover:text-primary transition-colors hidden sm:inline">Next</span>
+                    <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </section>
@@ -299,6 +361,33 @@
 
 {% block extra_js %}
 <script>
+    function projectSlider(total) {
+        return {
+            current: 0,
+            total: total,
+            prev() { this.current = (this.current - 1 + this.total) % this.total; },
+            next() { this.current = (this.current + 1) % this.total; },
+            goTo(i) { this.current = i; },
+            getCardStyle(index) {
+                const diff = index - this.current;
+                if (diff === 0) {
+                    return 'transform: translateX(0) scale(1); opacity: 1; filter: blur(0); z-index: 30;';
+                }
+                const direction = diff > 0 ? 1 : -1;
+                const absDiff = Math.abs(diff);
+                if (absDiff === 1 || (absDiff === this.total - 1)) {
+                    const side = (diff === 1 || diff === -(this.total - 1)) ? 1 : -1;
+                    return `transform: translateX(${side * 60}%) scale(0.82); opacity: 0.5; filter: blur(4px); z-index: 20;`;
+                }
+                if (absDiff === 2 || absDiff === this.total - 2) {
+                    const side = (diff === 2 || diff === -(this.total - 2)) ? 1 : -1;
+                    return `transform: translateX(${side * 110}%) scale(0.65); opacity: 0.2; filter: blur(8px); z-index: 10;`;
+                }
+                return 'transform: translateX(0) scale(0.5); opacity: 0; filter: blur(12px); z-index: 0; pointer-events: none;';
+            }
+        }
+    }
+
     function contactForm() {
         return {
             formData: {
